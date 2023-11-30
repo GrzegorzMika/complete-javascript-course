@@ -1,7 +1,7 @@
 {
   "name": "forkify",
   "version": "1.0.0",
-  "description": "Recipy application",
+  "description": "Recipe application",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html"
@@ -16,6 +16,7 @@
   "dependencies": {
     "core-js": "^3.33.3",
     "fractional": "^1.0.0",
+    "node-gyp-build-optional-packages": "^4.3.5",
     "regenerator-runtime": "^0.14.0"
   }
 }
