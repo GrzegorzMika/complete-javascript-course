@@ -6,12 +6,32 @@ export default class View {
   _errorMessage;
   _message;
 
-  render(data) {
+  render(data, render=true) {
     if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
 
     this._data = data;
+    if (!render) return this._generateMarkup()
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', this._generateMarkup());
+  }
+
+  update(data) {
+    this._data = data;
+    const newMarkup = this._generateMarkup();
+    const newDOM = document.createRange().createContextualFragment(newMarkup);
+    const newElements = Array.from(newDOM.querySelectorAll('*'));
+    const currentElements = Array.from(this._parentElement.querySelectorAll('*'));
+
+    newElements.forEach((newEl, i) => {
+      const currentEl = currentElements[i];
+      if(!newEl.isEqualNode(currentEl) && newEl.firstChild?.nodeValue.trim() !== '') {
+        currentEl.textContent = newEl.textContent;
+      }
+
+      if(!newEl.isEqualNode(currentEl)) {
+        Array.from(newEl.attributes).forEach(attr => currentEl.setAttribute(attr.name, attr.value))
+      }
+    });
   }
 
   renderSpinner() {
